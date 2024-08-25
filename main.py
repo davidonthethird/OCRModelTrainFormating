@@ -9,8 +9,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 '''
-Purpose of Code: To extract each scanned word into a json with following format {"Filename":"Text"} and export jpg 
-of each word as scanned by OCR 
+Purpose of Code: Create a dataset that can be used to train an OCR model from your data.
 
 Prerequisites: 
 1. CSV (ocr_out.csv) with the following column headers: [min_x, min_y, width, height,text] with data from 
@@ -21,6 +20,8 @@ number (used for multiple document OCR scans)
 Post running: You may parse the JSON to correct any discrepancy between the documents and the OCR Scan. Then run 
 through pytorch/tensorflow to train model. Code was written to work with docTR OCR but should work with most other 
 OCR.
+
+Note: This is only for text recognition, not text detection.
 '''
 # ~~~ STEP 1 ~~~
 # Extract text box
@@ -45,39 +46,39 @@ with open('ocr_out.csv') as current_csv:
         if page_df.empty:
             continue
         else:
-            # Convert into numpy
+            # Convert into numpy (runs magnitudes faster)
             np_df = page_df[['min_x', 'min_y', 'width', 'height', 'text']].to_numpy()
 
             # Open image of full page
-            img = Image.open(f'my_project/files/images/scanned_{page_num}.jpg')
+            img = Image.open(f'Original Images/scanned_{page_num}.jpg')
 
             # Enumerate through each line in the database
             for (line_num, line) in enumerate(np_df, 1):
                 # Get length and width of each text box
-                new_len = line[4]
-                new_wid = line[5]
+                new_len = line[2]
+                new_wid = line[3]
                 print(f'len:{new_len} ~ width:{new_wid}')
 
                 # Get coordinates for each point of text box
-                min_x = line[2]
-                min_y = line[3]
-                max_x = line[2] + new_len
-                max_y = line[3] + new_wid
+                min_x = line[0]
+                min_y = line[1]
+                max_x = line[0] + new_len
+                max_y = line[1] + new_wid
 
                 # Crop it and save it
 
                 new_img = img.crop(tuple([min_x, min_y, max_x, max_y]))
                 new_img = new_img.resize((new_len, new_wid))
-                new_img.save(rf'./my_project/files/images/training/page_{page_num}_word_{line_num}.jpg')
+                new_img.save(rf'Test Images/page_{page_num}_word_{line_num}.jpg')
 
                 # Append to JSON with File Name:Word
-                with open('my_project/files/images/training/training.json') as f:
+                with open('Jsons/training.json') as f:
                     data = json.load(f)
 
                 new_json = {f"page_{page_num}_word_{line_num}.jpg": line[-1]}
                 data.update(new_json)
 
-                with open('my_project/files/images/training/training.json', "w") as f:
+                with open('Jsons/training.json', "w") as f:
                     json.dump(data, f)
 
 # ~~~ STEP 2 ~~~
@@ -85,7 +86,8 @@ with open('ocr_out.csv') as current_csv:
 # Scans each text box using a different OCR (I chose pytesseract)
 # Saves Confidence and Text output into a 2nd json (OCR_checker.json)
 
-# Put your directory here for the text boxes
+# Put your directory here for the text boxes (If you dont put full directories for this part, it can come up with an
+# error occasionally)
 directory = 'C:\Python Projects\OCRModelTrainFormating\Test Images'
 
 # Need to download tesseract and put your dirrectory here
