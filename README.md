@@ -9,6 +9,6 @@ OCR.
 2. JPG of each file the OCR Scanned in following format: (scanned_{page_number}.jpg) where page_number is document 
 number (used for multiple document OCR scans)
 
-Post running: You may parse the JSON to correct any discrepenceis between the documents and the OCR Scan. Then run 
+Post running: You may parse the JSON to correct any discrepancies between the documents and the OCR Scan. Then run 
 through pytorch/tensorflow to train model. Code was written to work with docTR OCR but should work with most other 
 OCR.
