@@ -1,4 +1,4 @@
-Export Text Boxes and JSON of words from OCR to correct and train models
+**Export Text Boxes and JSON of words from OCR to correct and train models**
 
 Purpose of Code: Create a dataset that can be used to train an OCR model from your data.
 
@@ -7,4 +7,6 @@ Prerequisites:
 OCR. 
 2. JPG of each file the OCR Scanned in following format: (scanned_{page_number}.jpg) where page_number is document 
 number (used for multiple document OCR scans)
+
+Was written to work with docTR primarily but should work with any other OCR
 
