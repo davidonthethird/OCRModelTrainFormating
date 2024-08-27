@@ -1,0 +1,1 @@
+Folder where all images that are in the training sample will go to
