@@ -31,7 +31,7 @@ Note: This is only for text recognition, not text detection.
 
 # Put your directory here for the project OCRModelTrainFormating (If you don't put full directories for this part,
 # it can come up with an error occasionally)
-directory = '/Users/david/PycharmProjects/OCRModelTrainFormating'
+directory = ''
 if not directory:
     raise ValueError('Please enter a valid directory')
 
@@ -82,7 +82,7 @@ if step == 1:
         # Find last page for enumeration
         last_page = full_df.page_num.iloc[-1]
 
-        with alive_bar(int(last_page + 1)) as bar:
+        with alive_bar(int(last_page + 1), force_tty=True) as bar:
             # Enumerate through all pages
             for page_num in range(1, last_page + 1):
                 # Remove any page that isn't current
@@ -226,11 +226,11 @@ if step == 3:
     final_check_dict = {}
 
     # Load json file from OCR_checker (pytesseract)
-    with open('Jsons/OCR_checker.json') as f:
+    with open(f'{directory}/Jsons/OCR_checker.json') as f:
         ocr_checker = json.load(f)
 
     # Load file from training dataset (docTR)
-    with open('Jsons/training.json') as f:
+    with open(f'{directory}/Jsons/training.json') as f:
         training = json.load(f)
         filename_training = training.keys()
 
