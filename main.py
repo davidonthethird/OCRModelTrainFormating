@@ -45,28 +45,28 @@ with open(f'{directory}/Jsons/history.json', 'r') as f:
     history = json.load(f)
     step = history['Step']
 
-    # Ask for continue where we left off or start from begining
-    if step > 1:
-        c = input(f'Welcome to OCRModelTrainFormating\n Would you like to continue where you left off? (Y/N): ')
-        # Set step to 1 (beginning) if we are not continuing
-        if c.lower() != "y":
-            step = 1
-            # Remove Test files and final images
-            print('% Removing Old Files %')
-            test_files = glob.glob(f'{directory}/Test Images/*')
-            final_files = glob.glob(f'{directory}/Final Images/*')
+# Ask for continue where we left off or start from beginning
+if step > 1:
+    c = input(f'Welcome to OCRModelTrainFormating\n Would you like to continue where you left off? (Y/N): ')
+    # Set step to 1 (beginning) if we are not continuing
+    if c.lower() != "y":
+        step = 1
+        # Remove Test files and final images
+        print('% Removing Old Files %')
+        test_files = glob.glob(f'{directory}/Test Images/*')
+        final_files = glob.glob(f'{directory}/Final Images/*')
 
-            all_files = test_files + final_files
-            for f in all_files:
-                # Dont remove text file
-                if ".txt" not in f:
-                    os.remove(f)
-                    # Bug that requires sleep otherwise it won't delete files
-                    time.sleep(.1)
+        all_files = test_files + final_files
+        for file in all_files:
+            # Dont remove text file
+            if ".txt" not in file:
+                os.remove(file)
+                # Bug that requires sleep otherwise it won't delete files
+                time.sleep(.1)
 
-            # Erase Jsons
-            with open('Jsons/history.json', 'w') as f:
-                json.dump("{}", f)
+        # Erase Jsons
+        with open('Jsons/history.json', 'w') as f:
+            json.dump("{}", f)
 
 # ~~~ STEP 1 ~~~
 # Extract text box
@@ -202,7 +202,7 @@ if step == 2:
     print(f"~Finished step 2~")
     print("Press Enter to Continue")
 
-    #Timeout of 5 seconds if there is no human input
+    # Timeout of 5 seconds if there is no human input
     i, o, e = select.select([sys.stdin], [], [], 5)
 
     if i:
